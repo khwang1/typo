@@ -55,6 +55,25 @@ And /^I am logged into the admin panel$/ do
   end
 end
 
+# added by Karen
+And /^Article 2 is set up$/ do
+  Article.create!(:title => 'Hello World 2!',
+                  :author => 'admin',
+                  :body => 'The is the second article',
+                  :allow_comments => 1,
+                  :allow_pings =>1,
+                  :published => 1,
+                  :permalink => 'hello-world'                  
+                 )                 
+end
+
+And /^the following articles exist:$/ do |articles_table|
+  articles_table.hashes.each do |hash|
+    Article.create!(hash) # calling Article.new doesn't work, the articles aren't created
+  end
+end
+
+
 # Single-line step scoper
 When /^(.*) within (.*[^:])$/ do |step, parent|
   with_scope(parent) { When step }
@@ -88,6 +107,13 @@ end
 When /^(?:|I )fill in "([^"]*)" for "([^"]*)"$/ do |value, field|
   fill_in(field, :with => value)
 end
+
+#added by Karen
+When /^(?:|I )edit "([^"]*)"$/ do |article|
+  click_link(article)
+end
+
+
 
 # Use this to fill in an entire form with data from a table. Example:
 #
