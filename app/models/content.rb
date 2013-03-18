@@ -283,6 +283,9 @@ class Content < ActiveRecord::Base
     blog.url_for(redirects.last.from_path, :only_path => false)
   end
 
+  def merge_article_id
+  end
+  
 end
 
 class Object
