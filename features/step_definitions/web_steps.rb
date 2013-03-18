@@ -43,6 +43,16 @@ Given /^the blog is set up$/ do
                 :state => 'active'})
 end
 
+And /^the user Karen exists$/ do
+  User.create!({:login => 'karen',
+                :password => 'bbbbbbbb',
+                :email => 'karen@snow.com',
+                :profile_id => 2,
+                :name => 'karen',
+                :state => 'active'})
+
+end
+
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
@@ -55,16 +65,16 @@ And /^I am logged into the admin panel$/ do
   end
 end
 
-# added by Karen
-And /^Article 2 is set up$/ do
-  Article.create!(:title => 'Hello World 2!',
-                  :author => 'admin',
-                  :body => 'The is the second article',
-                  :allow_comments => 1,
-                  :allow_pings =>1,
-                  :published => 1,
-                  :permalink => 'hello-world'                  
-                 )                 
+And /^I am logged in as user Karen$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'karen'
+  fill_in 'user_password', :with => 'bbbbbbbb'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
 end
 
 And /^the following articles exist:$/ do |articles_table|

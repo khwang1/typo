@@ -20,8 +20,15 @@ Feature: Merge Articles
 	When I edit "Article 1"
 	Then I should see "Merge Articles"
 	And I should see "Article ID"
+	And I should see "Merge"
 	
-  Scenario: A non-admin cannot merge two articles
+  Scenario: Merge should NOT be on a new article
+    Given I am on the new article page
+    Then show me the page
+	And I should not see "Merge Articles"
+	And I should not see "Article ID"
+	And I should not see "Merge"
+
 
   Scenario: When articles are merged, the merged article should contain the text of both previous articles
 	
