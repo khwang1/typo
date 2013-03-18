@@ -149,5 +149,13 @@
   </div>    
   </div>
 
+
+<% if !@article.id.nil? && current_user.admin? %>
+  <div class=''>
+	<h4><%=_("Merge Articles")%></h4>
+	<%= render 'admin/content/merge_article' %>
+  </div>
+<% end %>
+
 </div>
 
