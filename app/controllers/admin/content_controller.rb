@@ -113,7 +113,9 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
 
+  # -------------------------------------------------------------------------------- 
   protected
+  # -------------------------------------------------------------------------------- 
 
   def get_fresh_or_existing_draft_for_article
     if @article.published and @article.id
@@ -162,6 +164,7 @@ class Admin::ContentController < Admin::BaseController
         
     @article.published_at = DateTime.strptime(params[:article][:published_at], "%B %e, %Y %I:%M %p GMT%z").utc rescue Time.parse(params[:article][:published_at]).utc rescue nil
 
+    #Karen - if request is post, then this is a CREATE not UPDATE
     if request.post?
       set_article_author
       save_attachments
