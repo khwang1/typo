@@ -4,6 +4,8 @@ describe Admin::CategoriesController do
   render_views
 
   before(:each) do
+    # must delete all existing blogs before factory create a new one, because there can only be one blog
+    Blog.delete_all
     Factory(:blog)
     #TODO Delete after removing fixtures
     Profile.delete_all
@@ -16,6 +18,13 @@ describe Admin::CategoriesController do
     assert_response :redirect, :action => 'index'
   end
 
+  describe "test_new" do
+    it "should be successful" do
+      get :new
+      response.should be_success
+    end
+  end
+  
   describe "test_edit" do
     before(:each) do
       get :edit, :id => Factory(:category).id

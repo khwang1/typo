@@ -21,6 +21,9 @@ module NavigationHelpers
       
     when /^the manage articles page$/
       '/admin/content'
+      
+    when /^the admin dashboard page$/
+      '/admin'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
