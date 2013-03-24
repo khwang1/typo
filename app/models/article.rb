@@ -416,7 +416,26 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with(other_article_id)
+    puts "!!!! inside article method merge_with() !!!!"
+    other_article = Article.find_by_id(other_article_id)
+    new_merged_article = nil    
+    if !(other_article.nil?)
+      puts "other_article=#{other_article.id}"
+      new_merged_article = Article.new
+      new_merged_article.title = title + " merged"
+      new_merged_article.author = author
+      new_merged_article.body = body + other_article.body
+      new_merged_article.published_at = Time.now
+      new_merged_article.user_id = user_id
+      new_merged_article.save!
+    end
+    return new_merged_article
+  end
+
+# --------------------------------------------------------------------------------  
   protected
+# --------------------------------------------------------------------------------
 
   def set_published_at
     if self.published and self[:published_at].nil?

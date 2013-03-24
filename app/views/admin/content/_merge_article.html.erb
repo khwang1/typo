@@ -1,8 +1,4 @@
-<!-- <div class='class'> -->
-  Article ID	
-  <%= text_field 'article', 'merge_article_id'%>
-  <!-- <%= link_to _("Merge"),  :class => 'btn' %> -->
-  <br/>
-  <%= submit_tag(_("Merge"), {:class => 'btn'}) %>
-
-<!-- </div> -->
+Article ID
+<%= text_field_tag 'merge_with'%>
+<br/>
+<%= submit_tag "merge"%>

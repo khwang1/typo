@@ -112,7 +112,7 @@ class Admin::ContentController < Admin::BaseController
     end
     render :text => nil
   end
-
+  
   # -------------------------------------------------------------------------------- 
   protected
   # -------------------------------------------------------------------------------- 
@@ -149,9 +149,24 @@ class Admin::ContentController < Admin::BaseController
 
     @post_types = PostType.find(:all)
     if request.post?
+      puts "!!!! it is a POST !!!!!"
       if params[:article][:draft]
+        puts "!!![:article][:draft] = #{params[:article][:draft]}"
         get_fresh_or_existing_draft_for_article
+      elsif !params[:merge_with].empty?
+        puts "!!!!! at params[:merge_with]"
+        puts "params[:action]=#{params[:action]}"
+        puts "!!!!!params[:merge_with]=|#{params[:merge_with]}|"
+        @new_article = @article.merge_with(params[:merge_with])
+        if !@new_article.nil?
+          flash[:notice] = _('Articles were successfully merged')
+        else
+          flash[:notice] = _('Article merge failed')
+        end
+        redirect_to :action => 'index'
+        return
       else
+        puts "!!!!at else"
         if not @article.parent_id.nil?
           @article = Article.find(@article.parent_id)
         end
@@ -164,7 +179,6 @@ class Admin::ContentController < Admin::BaseController
         
     @article.published_at = DateTime.strptime(params[:article][:published_at], "%B %e, %Y %I:%M %p GMT%z").utc rescue Time.parse(params[:article][:published_at]).utc rescue nil
 
-    #Karen - if request is post, then this is a CREATE not UPDATE
     if request.post?
       set_article_author
       save_attachments
