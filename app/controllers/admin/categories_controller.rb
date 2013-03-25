@@ -5,8 +5,11 @@ class Admin::CategoriesController < Admin::BaseController
   def edit; new_or_edit;  end
 
   def new 
+    # puts "!!!inside new()"
+    @category = Category.new 
+    @categories = Category.find(:all)       
     respond_to do |format|
-      format.html { new_or_edit }
+      format.html
       format.js { 
         @category = Category.new
       }
@@ -24,20 +27,29 @@ class Admin::CategoriesController < Admin::BaseController
   private
 
   def new_or_edit
+    # puts "!!!inside new_or_edit()"
     @categories = Category.find(:all)
-    @category = Category.find(params[:id])
-    @category.attributes = params[:category]
-    if request.post?
-      respond_to do |format|
-        format.html { save_category }
-        format.js do 
-          @category.save
-          @article = Article.new
-          @article.categories << @category
-          return render(:partial => 'admin/content/categories')
-        end
-      end
+  
+    if (params[:id].nil?)
+      # puts "!!! at if (params[:id].nil?), it is a new category"
+      @category = Category.new(params[:category])
+      save_category
       return
+    else
+      @category = Category.find(params[:id])
+      @category.attributes = params[:category]
+      if request.post?
+        respond_to do |format|
+          format.html { save_category }
+          format.js do 
+            @category.save
+            @article = Article.new
+            @article.categories << @category
+            return render(:partial => 'admin/content/categories')
+          end
+        end
+        return
+      end
     end
     render 'new'
   end
